@@ -1,18 +1,24 @@
 package com.mb;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
 public class CarRentalSystemService {
 
     private final EnumMap<CarType, Integer> carFleet;
+    private final List<CarReservation> carReservations;
 
     public CarRentalSystemService(EnumMap<CarType, Integer> carFleet) {
         this.carFleet = carFleet;
+        this.carReservations = new ArrayList<>();
     }
 
     public CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
-        if (isReservationPossible(carType)) {
+        CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
+
+        if (isReservationPossible(carType, carReservationTimeSlot)) {
             return null;
         }
 
@@ -23,7 +29,17 @@ public class CarRentalSystemService {
         return carFleet.get(carType);
     }
 
-    private boolean isReservationPossible(CarType carType) {
-        return true;
+    private boolean isReservationPossible(CarType carType, CarReservationTimeSlot carReservationTimeSlot) {
+        int totalCarsOfType = carFleet.get(carType);
+        long reservedCarsOfType = getNumberOfOverlappingReservations(carType, carReservationTimeSlot);
+
+        return reservedCarsOfType < totalCarsOfType;
+    }
+
+    private long getNumberOfOverlappingReservations(CarType carType, CarReservationTimeSlot carReservationTimeSlot) {
+        return carReservations.stream()
+                .filter(carReservation -> carReservation.isCarReservationForGivenCarType(carType))
+                .filter(carReservation -> carReservation.isCarReservationTimeSlotOverlappingWithAnotherTimeSlot(carReservationTimeSlot))
+                .count();
     }
 }
