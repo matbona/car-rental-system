@@ -47,7 +47,7 @@ public class CarRentalSystemServiceTest {
         // When
         // Then
         assertThatThrownBy(() -> carRentalSystemService.reserveCar(CarType.SUV, start.plusDays(1), 2))
-                .isInstanceOf(CarTypeNotExistException.class);
+                .isInstanceOf(CarTypeNotAvailableException.class);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class CarRentalSystemServiceTest {
 
         // Then
         assertThatThrownBy(() -> carRentalSystemService.reserveCar(CarType.SEDAN, start.plusHours(2), 1))
-                .isInstanceOf(CarTypeNotExistException.class);
+                .isInstanceOf(CarTypeNotAvailableException.class);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class CarRentalSystemServiceTest {
 
         // Then
         assertThatThrownBy(() -> carRentalSystemService.reserveCar(CarType.VAN, start, 1))
-                .isInstanceOf(CarTypeNotExistException.class);
+                .isInstanceOf(CarTypeNotAvailableException.class);
     }
 
 }

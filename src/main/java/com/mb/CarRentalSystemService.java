@@ -25,7 +25,7 @@ public class CarRentalSystemService {
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         if (!isReservationPossible(carType, carReservationTimeSlot)) {
-            throw new CarTypeNotExistException("Given Car Type does not exist");
+            throw new CarTypeNotAvailableException("Given Car Type does not exist");
         }
 
         CarReservation carReservation = CarReservation.createCarReservation(carType, carReservationTimeSlot);
