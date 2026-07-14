@@ -2,15 +2,15 @@ package com.mb;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class CarRentalSystemService {
 
-    private final EnumMap<CarType, Integer> carFleet;
+    private final Map<CarType, Integer> carFleet;
     private final List<CarReservation> carReservations;
 
-    public CarRentalSystemService(EnumMap<CarType, Integer> carFleet) {
+    public CarRentalSystemService(Map<CarType, Integer> carFleet) {
         this.carFleet = carFleet;
         this.carReservations = new ArrayList<>();
     }
