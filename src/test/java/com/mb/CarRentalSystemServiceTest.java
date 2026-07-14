@@ -25,6 +25,7 @@ public class CarRentalSystemServiceTest {
         CarReservation carReservation = carRentalSystemService.reserveCar(CarType.SEDAN, start, 2);
 
         // Then
+        assertThat(carReservation.id()).isNotNull();
         assertThat(carReservation.carType()).isEqualTo(CarType.SEDAN);
         assertThat(carReservation.carReservationTimeSlot().startingDateTime()).isEqualTo(start);
         assertThat(carReservation.carReservationTimeSlot().endingDateTime()).isEqualTo(LocalDateTime.of(2026, 8, 3, 10, 0));
