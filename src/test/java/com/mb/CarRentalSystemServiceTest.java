@@ -130,4 +130,19 @@ public class CarRentalSystemServiceTest {
         assertThat(availableCars).isEqualTo(1);
     }
 
+    @Test
+    void shouldRejectReservationWhenFleetHasNoCarsOfRequestedType() {
+        // Given
+        CarRentalSystemService carRentalSystemService = new CarRentalSystemService(Map.of(
+                CarType.SEDAN, 1
+        ));
+
+        // When
+        LocalDateTime start = LocalDateTime.of(2026, 8, 1, 10, 0);
+
+        // Then
+        assertThatThrownBy(() -> carRentalSystemService.reserveCar(CarType.VAN, start, 1))
+                .isInstanceOf(CarTypeNotExistException.class);
+    }
+
 }
