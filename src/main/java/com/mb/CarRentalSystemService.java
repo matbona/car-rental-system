@@ -19,7 +19,10 @@ public class CarRentalSystemService {
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         if (isReservationPossible(carType, carReservationTimeSlot)) {
-            return null;
+            CarReservation carReservation = CarReservation.createCarReservation(carType, carReservationTimeSlot);
+            carReservations.add(carReservation);
+
+            return carReservation;
         }
 
         return null;
