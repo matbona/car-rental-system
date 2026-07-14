@@ -29,7 +29,12 @@ public class CarRentalSystemService {
     }
 
     public int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
-        return carFleet.get(carType);
+        CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
+
+        int totalCarsOfType = carFleet.get(carType);
+        long reservedCarsOfType = getNumberOfOverlappingReservations(carType, carReservationTimeSlot);
+
+        return Math.max(0, totalCarsOfType - (int) reservedCarsOfType);
     }
 
     private boolean isReservationPossible(CarType carType, CarReservationTimeSlot carReservationTimeSlot) {
