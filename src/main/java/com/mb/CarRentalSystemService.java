@@ -37,6 +37,10 @@ public class CarRentalSystemService {
         return Math.max(0, totalCarsOfType - (int) reservedCarsOfType);
     }
 
+    public List<CarReservation> getCarReservations() {
+        return this.carReservations;
+    }
+
     private boolean isReservationPossible(CarType carType, CarReservationTimeSlot carReservationTimeSlot) {
         int totalCarsOfType = carFleet.get(carType);
         long reservedCarsOfType = getNumberOfOverlappingReservations(carType, carReservationTimeSlot);
