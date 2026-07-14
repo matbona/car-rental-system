@@ -1,13 +1,6 @@
-# Car Rental OOP Starter
+# Car Rental System
 
-This is an intentionally small, OOP-focused simulation of a car rental reservation system.
-
-The task statement says that:
-- a production-ready solution is not expected,
-- around two hours of effort should be enough,
-- the solution should focus on non-trivial aspects,
-- boilerplate and infrastructure should be avoided,
-- depth is preferred over breadth.
+This is an intentionally small simulation of a car rental reservation system.
 
 For that reason this project does **not** include Spring Boot, REST API, persistence, database setup, authentication or UI.
 The solution focuses on the core domain problem: reserving a limited number of cars of a given type for a selected time period.
@@ -20,14 +13,13 @@ The solution focuses on the core domain problem: reserving a limited number of c
   - `VAN`
 - The number of cars of each type is limited.
 - A customer can reserve a car type for a selected date/time and number of days.
-- A reservation is rejected if all cars of the requested type are already reserved in an overlapping period.
 - Unit tests verify the core business rules.
 
 ## Design focus
 
 I intentionally invested most effort in:
 
-- modelling a reservation period as a domain object,
+- modeling a reservation period as a domain object,
 - correctly detecting overlapping time periods,
 - treating reservations as half-open intervals: `[start, end)`,
 - enforcing fleet limits per car type,
@@ -43,6 +35,20 @@ I intentionally did not spend effort on:
 - UI,
 - payment flow,
 - deployment or production infrastructure.
+
+## Possible production improvements
+
+If this were evolved into a production-ready solution, I would consider:
+
+- persistent storage,
+- transactional consistency on the database level,
+- customer identity,
+- assigning a concrete car at pickup time,
+- REST API or messaging interface,
+- timezone strategy,
+- audit log,
+- monitoring,
+- concurrency tests against the target database.
 
 ## Time interval decision
 
@@ -72,11 +78,11 @@ mvn test
 ## Main classes
 
 ```text
-src/main/java/com/example/carrental
+src/main/java/com/mb
   CarType.java
-  ReservationPeriod.java
-  Reservation.java
-  CarRentalService.java
+  CarReservationTimeSlot.java
+  CarReservation.java
+  CarRentalSystemService.java
   CarTypeNotAvailableException.java
 ```
 
@@ -89,26 +95,11 @@ Map<CarType, Integer> fleet = Map.of(
         CarType.VAN, 1
 );
 
-CarRentalService service = new CarRentalService(fleet);
+CarRentalSystemService service = new CarRentalSystemService(fleet);
 
-Reservation reservation = service.reserve(
+CarReservation reservation = service.reserve(
         CarType.SEDAN,
         LocalDateTime.of(2026, 8, 1, 10, 0),
         3
 );
 ```
-
-## Possible production improvements
-
-If this were evolved into a production-ready solution, I would consider:
-
-- persistent storage,
-- transactional consistency on the database level,
-- customer identity,
-- assigning a concrete car at pickup time,
-- REST API or messaging interface,
-- idempotency for reservation requests,
-- timezone strategy,
-- audit log,
-- monitoring,
-- concurrency tests against the target database.
