@@ -18,14 +18,14 @@ public class CarRentalSystemService {
     public CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
-        if (isReservationPossible(carType, carReservationTimeSlot)) {
-            CarReservation carReservation = CarReservation.createCarReservation(carType, carReservationTimeSlot);
-            carReservations.add(carReservation);
-
-            return carReservation;
+        if (!isReservationPossible(carType, carReservationTimeSlot)) {
+            throw new CarTypeNotExistException("Given Car Type does not exist");
         }
 
-        return null;
+        CarReservation carReservation = CarReservation.createCarReservation(carType, carReservationTimeSlot);
+        carReservations.add(carReservation);
+
+        return carReservation;
     }
 
     public int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
