@@ -12,6 +12,18 @@ public class CarRentalSystemService {
     }
 
     public CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
+        if (isReservationPossible(carType)) {
+            return null;
+        }
+
         return null;
+    }
+
+    public int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
+        return carFleet.get(carType);
+    }
+
+    private boolean isReservationPossible(CarType carType) {
+        return true;
     }
 }
