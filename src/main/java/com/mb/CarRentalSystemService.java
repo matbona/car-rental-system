@@ -15,7 +15,7 @@ public class CarRentalSystemService {
         this.carReservations = new ArrayList<>();
     }
 
-    public CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
+    public synchronized CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         if (!isReservationPossible(carType, carReservationTimeSlot)) {
@@ -28,7 +28,7 @@ public class CarRentalSystemService {
         return carReservation;
     }
 
-    public int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
+    public synchronized int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         int totalCarsOfType = carFleet.get(carType);
@@ -37,7 +37,7 @@ public class CarRentalSystemService {
         return Math.max(0, totalCarsOfType - (int) reservedCarsOfType);
     }
 
-    public List<CarReservation> getCarReservations() {
+    public synchronized List<CarReservation> getCarReservations() {
         return this.carReservations;
     }
 
