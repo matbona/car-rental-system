@@ -11,7 +11,7 @@ public class CarRentalSystemService {
         this.carFleet = carFleet;
     }
 
-    public CarReservation reserve(CarType carType, LocalDateTime startDateTime, int days) {
+    public CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
         return null;
     }
 }
