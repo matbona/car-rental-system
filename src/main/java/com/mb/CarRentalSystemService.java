@@ -11,7 +11,7 @@ public class CarRentalSystemService {
     private final List<CarReservation> carReservations;
 
     public CarRentalSystemService(Map<CarType, Integer> carFleet) {
-        this.carFleet = carFleet;
+        this.carFleet = Map.copyOf(carFleet);
         this.carReservations = new ArrayList<>();
     }
 
@@ -38,7 +38,7 @@ public class CarRentalSystemService {
     }
 
     public synchronized List<CarReservation> getCarReservations() {
-        return this.carReservations;
+        return List.copyOf(this.carReservations);
     }
 
     private boolean isReservationPossible(CarType carType, CarReservationTimeSlot carReservationTimeSlot) {
