@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CarRentalSystemService {
 
@@ -11,11 +12,16 @@ public class CarRentalSystemService {
     private final List<CarReservation> carReservations;
 
     public CarRentalSystemService(Map<CarType, Integer> carFleet) {
+        Objects.requireNonNull(carFleet, "fleetSize must not be null");
+        validateCarFleetSize(carFleet);
+
         this.carFleet = Map.copyOf(carFleet);
         this.carReservations = new ArrayList<>();
     }
 
     public synchronized CarReservation reserveCar(CarType carType, LocalDateTime startDateTime, int days) {
+        Objects.requireNonNull(carType, "carType must not be null");
+
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         if (!isReservationPossible(carType, carReservationTimeSlot)) {
@@ -29,6 +35,8 @@ public class CarRentalSystemService {
     }
 
     public synchronized int getNumberOfAvailableCars(CarType carType, LocalDateTime startDateTime, int days) {
+        Objects.requireNonNull(carType, "carType must not be null");
+
         CarReservationTimeSlot carReservationTimeSlot = CarReservationTimeSlot.createCarReservationTimeSlot(startDateTime, days);
 
         int totalCarsOfType = carFleet.getOrDefault(carType, 0);
@@ -53,5 +61,16 @@ public class CarRentalSystemService {
                 .filter(carReservation -> carReservation.isCarReservationForGivenCarType(carType))
                 .filter(carReservation -> carReservation.isCarReservationTimeSlotOverlappingWithAnotherTimeSlot(carReservationTimeSlot))
                 .count();
+    }
+
+    private static void validateCarFleetSize(Map<CarType, Integer> fleetSize) {
+        fleetSize.forEach((carType, count) -> {
+            Objects.requireNonNull(carType, "carType in fleetSize must not be null");
+            Objects.requireNonNull(count, "car count must not be null");
+
+            if (count < 0) {
+                throw new IllegalArgumentException("Car count must not be negative");
+            }
+        });
     }
 }
