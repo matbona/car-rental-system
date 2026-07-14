@@ -1,5 +1,6 @@
 package com.mb;
 
+import java.time.LocalDateTime;
 import java.util.EnumMap;
 
 public class CarRentalSystemService {
@@ -10,4 +11,7 @@ public class CarRentalSystemService {
         this.carFleet = carFleet;
     }
 
+    public CarReservation reserve(CarType carType, LocalDateTime startDateTime, int days) {
+        return null;
+    }
 }
